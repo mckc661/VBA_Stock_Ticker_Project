@@ -1,0 +1,139 @@
+Sub Stock_Ticker_Medium_test()
+'Begin For Loop Through Worksheets
+
+Dim Current As Worksheet
+For Each Current In Worksheets
+Current.Activate
+
+
+'Set an Initial Variable for Stock Name
+Dim Stock_Name As String
+
+'Name Column Headers for Summary Statistics
+
+Cells(1, 10).Value = "Stock Name"
+Cells(1, 11).Value = "Yearly Change"
+Cells(1, 12).Value = "Percent Change"
+Cells(1, 13).Value = "Total Stock Volume"
+
+'Set Initial Variable for Volume
+Dim Stock_Volume As Double
+
+'Set Initial Variable for Yearly Change
+Dim Year_Change As Double
+Dim Perc_Change As Double
+Dim OpenPr As Double
+Dim ClosePr As Double
+
+Dim Start_Value As Integer
+Start_Value = 0
+
+'Set up Loop until Last Row
+
+Dim lastrow As Long
+
+lastrow = Cells(Rows.Count, 1).End(xlUp).Row
+
+'Keep Track of Location of Stock Name
+
+Dim Stock_Table_Row As Long
+
+Stock_Table_Row = 2
+
+
+'Loop through Stocks
+
+For i = 2 To lastrow
+
+
+
+'Test for Same Stock_Name on Next Row
+If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+
+    
+ClosePr = Cells(i, 6).Value
+
+
+'Check the Percentage Change
+
+Year_Change = ClosePr - OpenPr
+
+    If OpenPr = ClosePr Then
+        Perc_Change = 0
+
+
+        Else
+
+        Perc_Change = (ClosePr - OpenPr) / OpenPr
+    End If
+
+'if it isn't equal then...
+
+'Set the Stock Name
+Stock_Name = Cells(i, 1).Value
+
+
+
+'Add to the Stock Total
+Stock_Volume = Stock_Volume + Cells(i, 7).Value
+
+
+'Print the Name and Total
+
+
+Cells(Stock_Table_Row, 10).Value = Stock_Name
+Cells(Stock_Table_Row, 11).Value = Year_Change
+Cells(Stock_Table_Row, 12).Value = Perc_Change
+Cells(Stock_Table_Row, 12).NumberFormat = "00.0%"
+Cells(Stock_Table_Row, 11).NumberFormat = "00.00000"
+    If Year_Change > 0 Then
+        Cells(Stock_Table_Row, 11).Interior.ColorIndex = 4
+            Else
+        Cells(Stock_Table_Row, 11).Interior.ColorIndex = 4
+    End If
+
+Cells(Stock_Table_Row, 13).Value = Stock_Volume
+'Add 1 to Row for Stock Name Table
+
+Stock_Table_Row = Stock_Table_Row + 1
+
+'Reset Stock_Volume to Zero for next Stock Ticker
+
+Stock_Volume = 0
+
+
+'If the next cell is the same Stock
+
+Else
+
+'Test for Opening Value
+Start_Value = Start_Value + 1
+    If Start_Value = 1 Then
+        OpenPr = Cells(i, 3).Value
+    Else
+    End If
+    
+'Add to Stock_Table_Row
+
+
+Stock_Volume = Stock_Volume + Cells(i, 7).Value
+
+ClosePr = Cells(i, 6).Value
+
+'Check the Percentage Change
+
+
+
+
+End If
+
+
+Next i
+
+
+Next
+
+
+End Sub
+
