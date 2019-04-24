@@ -24,8 +24,10 @@ Dim Year_Change As Double
 Dim Perc_Change As Double
 Dim OpenPr As Double
 Dim ClosePr As Double
-
-Dim Start_Value As Integer
+'To set the opening price, I set up a start value to run a conditional
+'Where the first iteration sets the Open Price and then it loops until the Close Price
+'Close Price uses the last value which is the same as the current location in the rows
+Dim Start_Value As Double
 Start_Value = 0
 
 'Set up Loop until Last Row
@@ -41,34 +43,34 @@ Dim Stock_Table_Row As Long
 Stock_Table_Row = 2
 
 
-'Loop through Stocks
+'Loop through Stock Listing
 
 For i = 2 To lastrow
 
 
 
 'Test for Same Stock_Name on Next Row
+'If the Cells are different then you end the loop and print the values
 If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
-
-
     
 ClosePr = Cells(i, 6).Value
-
 
 'Check the Percentage Change
 
 Year_Change = ClosePr - OpenPr
 
-    If OpenPr = ClosePr Then
-        Perc_Change = 0
+'To avoid dividing by zero for the percentage change, we check
+'Whether the open price and close price are the same
 
+If OpenPr = ClosePr Then
+        Perc_Change = 0
 
         Else
 
         Perc_Change = (ClosePr - OpenPr) / OpenPr
     End If
 
-'if it isn't equal then...
+'if it isn't equal then...we start printing
 
 'Set the Stock Name
 Stock_Name = Cells(i, 1).Value
@@ -87,10 +89,13 @@ Cells(Stock_Table_Row, 11).Value = Year_Change
 Cells(Stock_Table_Row, 12).Value = Perc_Change
 Cells(Stock_Table_Row, 12).NumberFormat = "00.0%"
 Cells(Stock_Table_Row, 11).NumberFormat = "00.00000"
-    If Year_Change > 0 Then
+
+'If the Yearly Change is Positive, turn it Green
+'If the Yearly Change is Negative, turn it Red
+If Year_Change > 0 Then
         Cells(Stock_Table_Row, 11).Interior.ColorIndex = 4
             Else
-        Cells(Stock_Table_Row, 11).Interior.ColorIndex = 4
+        Cells(Stock_Table_Row, 11).Interior.ColorIndex = 3
     End If
 
 Cells(Stock_Table_Row, 13).Value = Stock_Volume
@@ -119,9 +124,11 @@ Start_Value = Start_Value + 1
 
 Stock_Volume = Stock_Volume + Cells(i, 7).Value
 
+'Set the Closing Price
+
 ClosePr = Cells(i, 6).Value
 
-'Check the Percentage Change
+
 
 
 
@@ -136,4 +143,3 @@ Next
 
 
 End Sub
-
